@@ -4,9 +4,9 @@ import Web3 from 'web3';
 
 const getWeb3 = async() => {
     const Ticket = contract(ticket_artifacts);
-    const infuraKey = "3ff90488f0a8481799f25db95e8ffd06";
-    const web3 = new Web3('http://localhost:7545');
-    //const web3 = new Web3(`https://ropsten.infura.io/v3/${infuraKey}`);
+    const infuraKey = "e00bb03549ce401d9fbda05a0f910269";
+    // const web3 = new Web3('http://localhost:7545');
+    const web3 = new Web3(`https://ropsten.infura.io/v3/${infuraKey}`);
     Ticket.setProvider(web3.currentProvider);
     const instance = await Ticket.deployed();
     const account = await web3.eth.getAccounts();
