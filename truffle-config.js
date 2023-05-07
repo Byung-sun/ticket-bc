@@ -18,12 +18,9 @@
  *
  */
 
-const HDWalletProvider = require('truffle-hdwallet-provider');
-const infuraKey = "3ff90488f0a8481799f25db95e8ffd06";
-
-const fs = require('fs');
-const mnemonic = fs.readFileSync(".secret").toString().trim();
-
+const HDWalletProvider = require("truffle-hdwallet-provider-klaytn");
+const URL = "https://api.baobab.klaytn.net:8651";
+const PRIVATE_KEY = "0xb1cfbca1ae8245638921bd5e1db5ec92cb99ddf6d334c9773d725b229706d8a8";
 
 module.exports = {
   /**
@@ -44,11 +41,10 @@ module.exports = {
     // options below to some value.
     //
     development: {
-     host: "127.0.0.1",     // Localhost (default: none)
-     network_id:9303,
-     port: 7545,            // Standard Ethereum port (default: none)
-     network_id: "*",       // Any network (default: none)
-     gas: 3000000
+      provider: new HDWalletProvider(PRIVATE_KEY, URL),
+      network_id: 1001,
+      gas: 20000000,
+      gasPrice: 25000000000,
     },
     // Another network with more advanced options...
     // advanced: {
@@ -61,14 +57,7 @@ module.exports = {
     // },
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
-    // ropsten: {
-    // provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/${infuraKey}`),
-    // network_id: 3,       // Ropsten's id
-    // gas: 5500000,        // Ropsten has a lower block limit than mainnet
-    // confirmations: 2,    // # of confs to wait between deployments. (default: 0)
-    // timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-    // skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-    // },
+
     // Useful for private networks
     // private: {
     // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),

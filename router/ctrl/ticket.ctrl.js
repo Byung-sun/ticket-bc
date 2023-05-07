@@ -3,13 +3,21 @@ import {
     getWeb3
 } from '../web3/web3';
 
+import Caver from 'caver-js';
+const caver = new Caver('https://api.baobab.klaytn.net:8651');
+let wallet = caver.klay.accounts.createWithAccountKey('0x6A12A3909D0737d7e4CDeDB3Cde300406700d672', '0xb1cfbca1ae8245638921bd5e1db5ec92cb99ddf6d334c9773d725b229706d8a8');
+caver.klay.accounts.wallet.add(wallet);
+
+const account = wallet.address
+
+
 const registTicket = async (TICKET) => {
     try {
-        const { instance, account } = await getWeb3();
+        const {instance, account} = await getWeb3();
 
         // const TICKET = {...req.body};
 
-        const buyTicketResult = await instance.BuyTicket(
+        const buyTicketResult = await instance.methods.BuyTicket(
             TICKET.concertId,
             TICKET.ticketId,
             TICKET.date,
@@ -21,8 +29,8 @@ const registTicket = async (TICKET) => {
             TICKET.fee,
             TICKET.cancleDate,
             TICKET.cancleFee,
-            {gas: 1000000, from: account[0]}
-        );
+        ).send(
+            {gas: 1000000, from: account.address});
             console.log(buyTicketResult);
 
 
@@ -37,18 +45,18 @@ const registTicket = async (TICKET) => {
 
 const buyTicket = async (req, res) => {
     try {
-        const { instance, account } = await getWeb3();
+        const {instance, account} = await getWeb3();
 
         const TICKET = {...req.body};
 
-        const buyTicketByFirstTicketer = await instance.BuyTicketByFirstTicketer(
+        const buyTicketByFirstTicketer = await instance.methods.BuyTicketByFirstTicketer(
             TICKET.concertId,
             TICKET.ticketId,
             TICKET.ticketerName,
             TICKET.ticketerPhoneNumber,
             TICKET.ticketerEmail,
-            {gas: 1000000, from: account[0]}
-        );
+        ).send(
+            {gas: 1000000, from: account.address});
 
         registTicket(TICKET).then(function(result){
             console.log(result);        
@@ -70,11 +78,11 @@ const buyTicket = async (req, res) => {
 
 const getTicket = async(req, res) => {
     try {
-        const { instance, account } = await getWeb3();
+        const {instance, account} = await getWeb3();
 
-        const ticketArr = await instance.GetTicketByConcertId.call(req.query.concertId, req.query.ticketId);
-        const firstTicketer = await instance.GetFirstTicketer.call(req.query.concertId, req.query.ticketId);
-        const transferTicketer = await instance.GetTransferTicketer.call(req.query.concertId, req.query.ticketId);
+        const ticketArr = await instance.methods.GetTicketByConcertId(req.query.concertId, req.query.ticketId).call();
+        const firstTicketer = await instance.methods.GetFirstTicketer(req.query.concertId, req.query.ticketId).call();
+        const transferTicketer = await instance.methods.GetTransferTicketer(req.query.concertId, req.query.ticketId).call();
         
         // ticketArr.firstTicketer = firstTicketer;
         // ticketArr.transferTicketer = transferTicketer;
@@ -92,11 +100,11 @@ const getTicket = async(req, res) => {
 
 const updateTicket = async(req, res) => {
     try {
-        const { instance, account } = await getWeb3();
+        const {instance, account} = await getWeb3();
 
         const ticket = {...req.body};
 
-        const updatedTicket = await instance.UpdateTicket(
+        const updatedTicket = await instance.methods.UpdateTicket(
             ticket.concertId,
             ticket.ticketId,
             ticket.date,
@@ -108,8 +116,8 @@ const updateTicket = async(req, res) => {
             ticket.fee,
             ticket.cancleDate,
             ticket.cancleFee,
-            {gas: 1000000, from: account[0]}
-        );
+        ).send(
+            {gas: 1000000, from: account.address});
 
         console.log(updatedTicket);
 
@@ -132,18 +140,18 @@ const deleteTicket = async (req, res) => {
 
 const buyTicketByTransferTicketer = async (req, res) => {
     try {
-        const { instance, account } = await getWeb3(); 
+        const {instance, account} = await getWeb3();
 
         const transferTicketer = {...req.body};
 
-        const transferTicketerInfo = await instance.BuyTicketByTransferTicketer(
+        const transferTicketerInfo = await instance.methods.BuyTicketByTransferTicketer(
             transferTicketer.concertId,
             transferTicketer.ticketId,
             transferTicketer.transferTicketerName,
             transferTicketer.transferTicketerPhoneNumber,
             transferTicketer.transferTicketerEmail,
-            {gas: 1000000, from: account[0]}
-        );
+        ).send(
+            {gas: 1000000, from: account.address});
         console.log(transferTicketerInfo);
 
         return transferTicketerInfo;

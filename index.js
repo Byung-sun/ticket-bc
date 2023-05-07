@@ -49,7 +49,8 @@ const fastify = require('fastify')({
 
 fastify.register(require('fastify-cors'), { 
   credentials: true,
-  origin: "http://localhost:3000",
+  // origin: "http://localhost:3000",
+  origin: "http://www.tget.co.kr",
 });
 
 
