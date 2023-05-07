@@ -45,7 +45,7 @@ module.exports = {
       network_id: 1001,
       gas: 20000000,
       gasPrice: 25000000000,
-    },
+
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port

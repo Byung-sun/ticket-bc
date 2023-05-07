@@ -1,4 +1,4 @@
-import contract from 'truffle-contract';
+
 import ticket_artifacts from '../../build/contracts/TicketContract.json';
 import Caver from 'caver-js';
 
@@ -26,7 +26,7 @@ const getWeb3 = async() => {
 
     caver.klay.accounts.wallet.add(account)
 
-    // const account = ['0xb1cfbca1ae8245638921bd5e1db5ec92cb99ddf6d334c9773d725b229706d8a8'];
+
   
     return {instance, account};
 }
